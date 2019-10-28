@@ -1,0 +1,23 @@
+# Template file for 'vte-ng'
+pkgname=vte-ng
+version=0.50.2.a # look into working 0.56.2.a in
+revision=1
+build_style=gnu-makefile
+hostmakedepends="gtk-doc automake gettext-devel pkg-config glib-devel libtool intltool"
+makedepends="pango-devel gtk+3-devel pcre2-devel gnutls-devel gperf gobject-introspection"
+short_desc="Termite patch for vte"
+maintainer="Jony <maybe-one-day-ubermensch@protonmail.com>"
+license="LGPL-2.1"
+homepage="https://github.com/thestinger/vte-ng"
+distfiles="https://github.com/thestinger/${pkgname}/archive/${version}.tar.gz"
+checksum="5d17f9d43b8b7401b45548370df733c67b6fcd194df067943421b548a331666b"
+
+do_configure() {
+	./autogen.sh --prefix=/usr --with-gtk=3.0 \
+	     enable_vala=no enable_glade=no 
+}
+
+post_install() {
+	vlicense COPYING
+}
+
