@@ -1,0 +1,39 @@
+# Template file for 'termite'
+pkgname=termite
+version=15
+revision=1
+build_style=gnu-makefile
+hostmakedepends="pkg-config git ncurses"
+makedepends="gtk+3 gtk+3-devel vte-ng pcre2-devel $(vopt_if x11 gdk-pixbuf-xlib) gnutls-devel"
+short_desc="Keyboard-centric, VTE-based modal terminal"
+maintainer="Jony <maybe-one-day-ubermensch@protonmail.com>"
+license="GPL-2.0"
+homepage="https://github.com/thestinger/termite"
+distfiles="https://github.com/thestinger/${pkgname}"
+checksum="3ae9ebef28aad081c6c11351f086776e2fd9547563b2f900732b41c376bec05a"
+
+build_options="x11"
+desc_option_x11="Enable support for X11"
+
+do_fetch() {
+	git clone --recursive ${distfiles} ${pkgname}-${version}
+}
+
+do_extract() {
+     exit
+}
+
+do_configure() {
+	# Termite's Makefile defaults to --prefix=/usr/local
+	# We want it to be /usr, instead.
+
+	sed -i "s,/usr/local,/usr," Makefile
+}
+
+post_install() {
+	vconf config
+
+	vman man/termite.1
+	vman man/termite.config.5
+}
+
