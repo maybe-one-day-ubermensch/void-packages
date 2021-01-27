@@ -1,0 +1,46 @@
+# Template file for 'rtl8814au-dkms'
+pkgname=rtl8814au-dkms
+version=20210127
+revision=1
+_modver=5.8.5.1
+_gitrev=27d2344264f774dd2add19d4139dfc07985d6ada
+wrksrc="rtl8814au-${_gitrev}"
+depends="dkms"
+short_desc="Realtek 8814AU USB WiFi driver (DKMS)"
+maintainer="Jony <maybe-one-day-ubermensch@protonmail.com>"
+license="GPL-2.0-only"
+homepage="https://github.com/aircrack-ng/rtl8814au"
+distfiles="https://github.com/aircrack-ng/rtl8814au/archive/${_gitrev}.tar.gz"
+checksum=f98cc0365a23f07133e1d42d4190d5ef3a4a00df684a1c74fbb3c27c58ddd54b
+dkms_modules="rtl8814au ${_modver}"
+
+case "$XBPS_TARGET_MACHINE" in
+	x86_64*) _karch="x86_64";;
+	i686*) _karch="i386";;
+	aarch64*) _karch="arm64";;
+	arm*) _karch="arm";;
+	ppc*) _karch="powerpc";;
+	mips*) _karch="mips";;
+	*) broken="kernel arch not defined";;
+esac
+
+post_patch() {
+	if [ "$XBPS_TARGET_ENDIAN" = "be" ]; then
+		vsed -i 's,@@VOID_ENDIAN@@,BIG,g' Makefile
+	else
+		vsed -i 's,@@VOID_ENDIAN@@,LITTLE,g' Makefile
+	fi
+	vsed -i "s,@@VOID_ARCH@@,${_karch},g" Makefile
+}
+
+do_install() {
+	local dest=/usr/src/rtl8814au-${_modver}
+
+	vmkdir "$dest"
+	vcopy "*" "${dest}"
+
+	# modules-load.d(5) file.
+	vmkdir usr/lib/modules-load.d
+	echo "8814au" > ${DESTDIR}/usr/lib/modules-load.d/${pkgname}.conf
+	chmod 644 ${DESTDIR}/usr/lib/modules-load.d/${pkgname}.conf
+}
