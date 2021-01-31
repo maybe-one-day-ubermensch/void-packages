@@ -1,0 +1,39 @@
+# Template file for 'bisq'
+pkgname=bisq
+version=1.5.4
+revision=1
+hostmakedepends="git git-lfs"
+makedepends="openjdk11"
+depends="openjdk11 gtk+3"
+short_desc="Decentralized cryptocurrency exchange"
+maintainer="Jony <maybe-one-day-ubermensch@protonmail.com>"
+license="AGPL-3.0-only"
+homepage="https://bisq.network"
+changelog="https://github.com/bisq-network/bisq/releases/tag/v{version}"
+
+do_fetch() {
+	git clone --depth=1 --branch=v${version} https://github.com/bisq-network/bisq.git "$wrksrc"
+	cd "$wrksrc"
+
+	git-lfs install
+	git-lfs pull
+}
+
+do_build() {
+	JAVA_HOME=/usr/lib/jvm/openjdk11/ ./gradlew clean :desktop:build
+}
+
+do_install() {
+	vmkdir opt/bisq/lib
+	vmkdir usr/bin
+
+	for tar_file in desktop/build/app/lib/*; do
+		vinstall "$tar_file" 644 opt/bisq/lib
+	done
+
+	vinstall bisq-desktop 755 opt/bisq/
+
+	ln -sf /opt/bisq/bisq-desktop ${DESTDIR}/usr/bin/bisq
+
+	vlicense LICENSE
+}
