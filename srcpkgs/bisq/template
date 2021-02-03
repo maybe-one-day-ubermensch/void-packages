@@ -1,6 +1,6 @@
 # Template file for 'bisq'
 pkgname=bisq
-version=1.5.4
+version=1.5.5
 revision=1
 hostmakedepends="git git-lfs"
 makedepends="openjdk11"
