@@ -1,0 +1,23 @@
+# Template file for 'wldash'
+pkgname=wldash
+version=56f6b1668dda6034205bf9f3d5b735f271a8c8b3
+revision=1
+build_style=cargo
+configure_args="--no-default-features --features=json-cfg,yaml-cfg"
+hostmakedepends="pkg-config"
+makedepends="$(vopt_if alsa alsa-lib-devel) dbus-devel\
+	fontconfig-devel $(vopt_if pulseaudio pulseaudio-devel)"
+short_desc="Dashboard/launcher/control-panel for Wayland"
+maintainer="Jony <maybe-one-day-ubermensch@protonmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://git.sr.ht/~kennylevinsen/wldash"
+distfiles="https://git.sr.ht/~kennylevinsen/wldash/archive/${version}.tar.gz"
+checksum=9581eb285f65d42bb75c1b2f5478d12b726b9546e623a7a79531fb9ceaae93cb
+
+build_options="alsa pulseaudio"
+build_options_default="alsa pulseaudio"
+
+_features="$(vopt_if alsa ',alsa-widget')"
+_features+="$(vopt_if pulseaudio ',pulseaudio-widget')"
+
+configure_args+="$_features"
