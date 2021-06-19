@@ -1,6 +1,6 @@
 # Template file for 'neovim'
 pkgname=neovim
-version=c78816eb6610dd6c3f3efec29bb00f062dcb02ad
+version=db06fe11fa5ff87a6eab1d380302a37c077c416e
 revision=1
 build_style=cmake
 build_helper="qemu"
@@ -13,7 +13,7 @@ maintainer="Steve Prybylski <sa.prybylx@gmail.com>"
 license="Apache-2.0, custom:Vim"
 homepage="https://neovim.io"
 distfiles="https://github.com/neovim/neovim/archive/${version}.tar.gz"
-checksum=5b1edd8978b5039478ff923f5ce5a96920b7411ef2b78158892cb26563c65908
+checksum=2b83863328356db870a5e56f4057405f97421c9b99c12356abed84738fa0d6a7
 
 alternatives="
  vi:vi:/usr/bin/nvim
