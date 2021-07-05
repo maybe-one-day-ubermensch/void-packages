@@ -1,0 +1,15 @@
+# Template file for 'xplr'
+pkgname=xplr
+version=0.14.4
+revision=1
+build_style=cargo
+short_desc="Hackable, minimal, fast TUI file explore"
+maintainer="Jony <maybe-one-day-ubermensch@protonmail.com>"
+license="MIT"
+homepage="https://arijitbasu.in/xplr/en/"
+distfiles="https://github.com/sayanarijit/xplr/archive/v${version}.tar.gz"
+checksum=c007d462661619257622283db1c91055e57673b9792947d079cd1286a2371b95
+
+post_install() {
+    vlicense LICENSE
+}
